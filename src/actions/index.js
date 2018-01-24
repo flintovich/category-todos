@@ -18,7 +18,7 @@ export const toggleTodo = (id, categoryId) => (
 
 export const addCategory = (id, title) => (
   {
-    type: 'ADD_CATEGORY',
+    type: 'ADD_CATEGORY_2',
     id,
     title,
   }
@@ -30,3 +30,9 @@ export const removeCategory = id => (
     id,
   }
 );
+
+export const loadData = (id, categoryId) => ({
+  type: 'LOAD_DATA_REQUEST',
+  id,
+  categoryId,
+});

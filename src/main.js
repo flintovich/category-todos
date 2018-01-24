@@ -1,9 +1,11 @@
+import 'babel-polyfill';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Router, Route, IndexRoute,  browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 
-import store from './store';
+import configureStore from './store';
+import rootSaga from './sagas';
 
 import App from './containers/App';
 import AddTodo from './components/AddTodo';
@@ -17,6 +19,9 @@ const routes = (
     <Route path="add-category" component={AddCategory}/>
   </Route>
 );
+const store = configureStore();
+
+store.runSaga(rootSaga);
 
 ReactDOM.render(
   <Provider store={store}>

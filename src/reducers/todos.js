@@ -9,7 +9,8 @@
         id: '1491466752427',
         text: 'first todo',
         isDone: 'false',
-        category: '1491466752417'
+        category: '1491466752417',
+        cryptoData: {},
       }
     ]
   },
@@ -88,6 +89,29 @@ export default function todos(state = initialState, action) {
 
     case 'REMOVE_CATEGORY': {
       return state.filter(category => category.categoryId !== action.id);
+    }
+
+    case 'API_CALL_SUCCESS': {
+      console.log(123, action);
+      const item = action.data;
+      const cryptoData = {
+        name: item.name,
+        symbol: item.symbol,
+        rank: item.rank,
+        price_usd: item.price_usd,
+        market_cap_usd: item.market_cap_usd,
+      };
+
+      return state.map(category => {
+        if(category.categoryId === action.categoryId) {
+          return {
+            ...category,
+            cryptoData,
+          }
+        }
+
+        return category;
+      });
     }
 
     default: {

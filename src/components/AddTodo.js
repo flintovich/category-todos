@@ -76,7 +76,7 @@ class AddTodo extends Component {
             componentClass="textarea"
             onChange={this.handleChangeValue}
             value={this.state.todoValue}
-            placeholder="Enter todo text"
+            placeholder="Enter correct crypto name. Like: bitcoin, ethereum, ripple"
           />
         </FormGroup>
         <FormGroup>

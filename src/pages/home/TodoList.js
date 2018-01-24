@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment'
-import { Panel, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Panel, ListGroup, ListGroupItem, Table } from 'react-bootstrap';
 
-import { toggleTodo, removeCategory } from '../../actions/index';
+import { toggleTodo, removeCategory, loadData } from '../../actions/index';
 import './TodoList.css';
 
-@connect(mapStateToProps, { toggleTodo, removeCategory })
+@connect(mapStateToProps, { toggleTodo, removeCategory, loadData })
 class TodoList extends Component {
 
   constructor(props) {
@@ -14,6 +14,7 @@ class TodoList extends Component {
 
     this.toggleTodoState = this.toggleTodoState.bind(this);
     this.removeCategory = this.removeCategory.bind(this);
+    this.loadServerData = this.loadServerData.bind(this);
   }
 
   toggleTodoState(todoId, categoryId) {
@@ -24,7 +25,13 @@ class TodoList extends Component {
     this.props.removeCategory(categoryId);
   }
 
+  loadServerData(text, categoryId) {
+    this.props.loadData(text, categoryId);
+  }
+
   getTodoList(category) {
+    console.log(777, category);
+
     return category.todos.map(todo => {
       const isDone = todo.isDone;
       const todoClass = isDone ? 'fa-minus-square' : 'fa-plus-square';
@@ -43,6 +50,33 @@ class TodoList extends Component {
               ></i>
             </div>
             <div>{todo.text}</div>
+            {todo.text && <button onClick={this.loadServerData.bind(this, todo.text, category.categoryId)}>Load info</button>}
+            {category.cryptoData && (
+              <Table striped bordered condensed hover>
+                <tbody>
+                  <tr>
+                    <td>Name</td>
+                    <td>{category.cryptoData.name}</td>
+                  </tr>
+                  <tr>
+                    <td>Symbol</td>
+                    <td>{category.cryptoData.symbol}</td>
+                  </tr>
+                  <tr>
+                    <td>Rank</td>
+                    <td>{category.cryptoData.rank}</td>
+                  </tr>
+                  <tr>
+                    <td>Prise USD</td>
+                    <td>{`$${category.cryptoData.price_usd}`}</td>
+                  </tr>
+                  <tr>
+                    <td>Capital USD</td>
+                    <td>{`$${category.cryptoData.market_cap_usd}`}</td>
+                  </tr>
+                </tbody>
+              </Table>
+            )}
           </div>
         </ListGroupItem>
       )
